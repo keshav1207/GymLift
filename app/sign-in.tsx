@@ -1,10 +1,25 @@
 import React from 'react'
-import { Text, StyleSheet, ScrollView, Image, Dimensions, TouchableOpacity, View} from 'react-native'
+import { Text, StyleSheet, ScrollView, Image, Dimensions, TouchableOpacity, View, Alert} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-      
+import { login } from '@/lib/appwrite';
+import { useGlobalContext } from '@/lib/global-provider';
+import { Redirect } from 'expo-router';
 
 const { height } = Dimensions.get('window');
       const signIn = () => {
+        const {refetch, loading, isLogged} = useGlobalContext();
+        if(!loading && isLogged) return <Redirect href={"/"}/>
+        const handleLogin = async () => {
+            const result = await login();
+
+            if(result) {
+              refetch();
+            }else {
+              Alert.alert('Error', 'Failed to Login');
+            }
+
+        };
+
         return (
           <SafeAreaView  style={styles.container}>
             <ScrollView style={styles.sview} >
@@ -20,7 +35,7 @@ const { height } = Dimensions.get('window');
               </View>
 
               
-             <TouchableOpacity>
+             <TouchableOpacity onPress={handleLogin}>
               <View className='loginBtn'style={styles.loginBtn}>
               
                 <Image  style={{ width: 25, height: 25 }} source={require('../assets/images/googleIcon.png')}/>
