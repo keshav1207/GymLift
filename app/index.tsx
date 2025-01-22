@@ -1,7 +1,27 @@
-import { Text, View } from "react-native";
+import { Text, View, TouchableOpacity, Alert} from "react-native";
 import { Link } from "expo-router";
+import { logout } from "@/lib/appwrite";
+import { useGlobalContext } from "@/lib/global-provider";
+import { Redirect } from "expo-router";
 
 export default function Index() {
+  const { refetch, isLogged, loading } = useGlobalContext();
+
+
+  const handleLogout = async () => {
+    const success = await logout();
+    if (success) {
+      Alert.alert('Success', 'Logged out successfully.');
+      refetch(); 
+    } else {
+      Alert.alert('Error', 'Failed to log out.');
+    }
+  };
+
+
+  if (!loading && !isLogged) {
+    return <Redirect href="/sign-in" />;
+  }
   return (
     <View
       style={{
@@ -15,6 +35,12 @@ export default function Index() {
       <Link href="/sign-in">Sign In</Link>
       <Link href="./root/tabs/workout"> Workout</Link>
       <Link href="/root/tabs/profile"> Profile</Link>
+
+      <TouchableOpacity onPress={handleLogout}>
+                    <View className='logOutBtn'>
+                      </View>
+                      <Text> Log out</Text>
+     </TouchableOpacity>
       
 
     </View>
