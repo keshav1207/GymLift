@@ -38,9 +38,7 @@ export default function Index() {
       }}
     >
       <Text style={{ marginBottom: 20, fontWeight: "bold", fontSize: 20 }}> Welcome to GymLift!</Text>
-      <Link href="/sign-in">Sign In</Link>
-      <Link href="/workout"> Workout</Link>
-      <Link href="/profile"> Profile</Link>
+      
     
 
       <TouchableOpacity onPress={handleLogout}>
