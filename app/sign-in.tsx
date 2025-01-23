@@ -8,11 +8,14 @@ import { Redirect } from 'expo-router';
 const { height } = Dimensions.get('window');
       const signIn = () => {
         const {refetch, loading, isLogged} = useGlobalContext();
-        if(!loading && isLogged) return <Redirect href={"/"}/>
+
+        if (!loading && isLogged) return <Redirect href="../" />;
+
         const handleLogin = async () => {
             const result = await login();
 
             if(result) {
+              Alert.alert('success' ,'Login successfully');
               refetch();
             }else {
               Alert.alert('Error', 'Failed to Login');
