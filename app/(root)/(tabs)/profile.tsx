@@ -1,8 +1,22 @@
-import { View, Text , ScrollView, StyleSheet, Image} from 'react-native'
+import { View, Text , ScrollView, StyleSheet, Image,TouchableOpacity, Alert} from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useGlobalContext } from "@/lib/global-provider";
+import { logout } from "@/lib/appwrite";
 
 const profile = () => {
+
+  const { refetch } = useGlobalContext();
+
+    const handleLogout = async () => {
+      const success = await logout();
+      if (success) {
+        Alert.alert('Success', 'Logged out successfully.');
+        refetch(); 
+      } else {
+        Alert.alert('Error', 'Failed to log out.');
+      }
+    };
   return (
     <SafeAreaView style={styles.container}>
 
@@ -23,11 +37,14 @@ const profile = () => {
       <Image  style={{ width: 40, height: 40 }} source={require('@/assets/icons/reminder.png')}/>
     </View>
 
-    <View style={styles.option}>
-      <Text > Log Out </Text>
-      <Image  style={{ width: 40, height: 40 }} source={require('@/assets/icons/logout.png')}/>
-      </View>
+    <TouchableOpacity onPress={handleLogout}style={styles.option}>
+      
+        <Text > Log Out </Text>
+        <Image  style={{ width: 40, height: 40 }} source={require('@/assets/icons/logout.png')}/>
+    </TouchableOpacity>
 
+      
+   
       </ScrollView>
 
     </SafeAreaView>
