@@ -1,9 +1,46 @@
-import { View, Text,  StyleSheet, TextInput, TouchableOpacity, ScrollView, Image} from 'react-native'
+import { View, Text,  StyleSheet, TextInput, TouchableOpacity, ScrollView, Image, FlatList} from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Feather } from '@expo/vector-icons';
 
+
+const exercises = [
+  { id: '1', name: 'Chest Press (Machine)', category: 'Chest', image: require('@/assets/images/profilepic.jpg') },
+  { id: '2', name: 'Shoulder Press (Machine)', category: 'Shoulder', image: require('@/assets/images/profilepic.jpg') },
+  { id: '3', name: 'Leg Press (Machine)', category: 'Legs', image: require('@/assets/images/profilepic.jpg') },
+  { id: '4', name: 'Back Extension (Machine)', category: 'Back', image: require('@/assets/images/profilepic.jpg') },
+  { id: '5', name: 'Bicep Curl (Machine)', category: 'Arms', image: require('@/assets/images/profilepic.jpg') },
+  { id: '6', name: 'Tricep Pushdown (Cable)', category: 'Arms', image: require('@/assets/images/profilepic.jpg') },
+  { id: '7', name: 'Lat Pulldown (Machine)', category: 'Back', image: require('@/assets/images/profilepic.jpg') },
+  { id: '8', name: 'Leg Curl (Machine)', category: 'Legs', image: require('@/assets/images/profilepic.jpg') },
+  { id: '9', name: 'Smith Machine Squat', category: 'Legs', image: require('@/assets/images/profilepic.jpg') },
+  { id: '10', name: 'Dumbbell Chest Fly', category: 'Chest', image: require('@/assets/images/profilepic.jpg') },
+  { id: '11', name: 'Chest Press2 (Machine)', category: 'Chest', image: require('@/assets/images/profilepic.jpg') },
+  { id: '12', name: 'Shoulder Press2 (Machine)', category: 'Shoulder', image: require('@/assets/images/profilepic.jpg') },
+  { id: '13', name: 'Leg Press2 (Machine)', category: 'Legs', image: require('@/assets/images/profilepic.jpg') },
+  
+];
+
+console.log(exercises.length); 
+
 const exercise = () => {
+
+  const renderExercise = ({ item }: { item: any }) => (
+    <View style={styles.exerciseContainer}>
+      <TouchableOpacity>
+        <View style={styles.exercise}>
+          <Image style={{ width: 40, height: 40 }} source={item.image} />
+          <View>
+            <Text style={ {fontWeight: 'bold'}}>{item.name}</Text>
+            <Text>{item.category}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+
+
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
 
@@ -39,122 +76,13 @@ const exercise = () => {
     </View>
       
 
-      <ScrollView style={{ flex: 1 }}>
-
-      <View>
-
-      <View style={styles.exerciseContainer} >
-        <TouchableOpacity>  
-          <View style={styles.exercise}>
-          <Image  style={{ width: 40, height: 40 }} source={require('@/assets/images/profilepic.jpg')}/>
-          <View>
-            <Text style={ {fontWeight: 'bold'}}>Chest Press (Machine)</Text> 
-            <Text>Chest</Text> 
-          </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-
-      <View style={styles.exerciseContainer} >
-        <TouchableOpacity>  
-          <View style={styles.exercise}>
-          <Image  style={{ width: 40, height: 40 }} source={require('@/assets/images/profilepic.jpg')}/>
-          <View>
-            <Text style={ {fontWeight: 'bold'}}>Chest Press (Machine)</Text> 
-            <Text>Chest</Text> 
-          </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-
-
-      <View style={styles.exerciseContainer} >
-        <TouchableOpacity>  
-          <View style={styles.exercise}>
-          <Image  style={{ width: 40, height: 40 }} source={require('@/assets/images/profilepic.jpg')}/>
-          <View>
-            <Text style={ {fontWeight: 'bold'}}>Chest Press (Machine)</Text> 
-            <Text>Chest</Text> 
-          </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-
-
-      <View style={styles.exerciseContainer} >
-        <TouchableOpacity>  
-          <View style={styles.exercise}>
-          <Image  style={{ width: 40, height: 40 }} source={require('@/assets/images/profilepic.jpg')}/>
-          <View>
-            <Text style={ {fontWeight: 'bold'}}>Chest Press (Machine)</Text> 
-            <Text>Chest</Text> 
-          </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-
-
-      <View style={styles.exerciseContainer} >
-        <TouchableOpacity>  
-          <View style={styles.exercise}>
-          <Image  style={{ width: 40, height: 40 }} source={require('@/assets/images/profilepic.jpg')}/>
-          <View>
-            <Text style={ {fontWeight: 'bold'}}>Chest Press (Machine)</Text> 
-            <Text>Chest</Text> 
-          </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-
-      <View style={styles.exerciseContainer} >
-        <TouchableOpacity>  
-          <View style={styles.exercise}>
-          <Image  style={{ width: 40, height: 40 }} source={require('@/assets/images/profilepic.jpg')}/>
-          <View>
-            <Text style={ {fontWeight: 'bold'}}>Chest Press (Machine)</Text> 
-            <Text>Chest</Text> 
-          </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-
-      <View style={styles.exerciseContainer} >
-        <TouchableOpacity>  
-          <View style={styles.exercise}>
-          <Image  style={{ width: 40, height: 40 }} source={require('@/assets/images/profilepic.jpg')}/>
-          <View>
-            <Text style={ {fontWeight: 'bold'}}>Chest Press (Machine)</Text> 
-            <Text>Chest</Text> 
-          </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-
-      <View style={styles.exerciseContainer} >
-        <TouchableOpacity>  
-          <View style={styles.exercise}>
-          <Image  style={{ width: 40, height: 40 }} source={require('@/assets/images/profilepic.jpg')}/>
-          <View>
-            <Text style={ {fontWeight: 'bold'}}>Chest Press (Machine)</Text> 
-            <Text>Chest</Text> 
-          </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-
-      </View>
-
-    
-      </ScrollView>
-
+    <FlatList
+        data={exercises}
+        renderItem={renderExercise}
+        keyExtractor={(item) => item.id}
+        style={{ flex: 1 }} // Ensures FlatList takes up remaining space
+        contentContainerStyle={{ paddingBottom: 100}} // Fixed issue with FlatList skipping last element
+      />
 
 
     </SafeAreaView>
