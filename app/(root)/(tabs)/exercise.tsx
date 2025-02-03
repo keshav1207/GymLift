@@ -1,8 +1,7 @@
 import { View, Text,  StyleSheet, TextInput, TouchableOpacity, ScrollView, Image, FlatList} from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Feather } from '@expo/vector-icons';
-
+import SearchBar from '@/.expo/components/searchBar'
 
 const exercises = [
   { id: '1', name: 'Chest Press (Machine)', category: 'Chest', image: require('@/assets/images/profilepic.jpg') },
@@ -49,14 +48,7 @@ const exercise = () => {
       <Text style={styles.headerText}>Exercises</Text>
       </View>
 
-      <View style={styles.searchBar}>
-      <Feather name="search" size={20} color="grey" style={styles.icon} />
-      <TextInput
-        placeholder="Search..."
-        placeholderTextColor="grey"
-        style={styles.input}
-      />
-      </View>
+      <SearchBar/>
 
 
 
