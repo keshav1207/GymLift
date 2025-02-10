@@ -1,5 +1,5 @@
 
-import {Client, Avatars, Account, OAuthProvider} from "react-native-appwrite"
+import {Client, Avatars, Account, OAuthProvider, Databases,Query} from "react-native-appwrite"
 import * as Linking from 'expo-linking';
 import * as AuthSession from 'expo-auth-session';
 import { openAuthSessionAsync } from "expo-web-browser";
@@ -7,7 +7,9 @@ export const config = {
     platform:'com.jsm.gymlift',
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
-};
+    databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
+    exerciseCollectionId: process.env.EXPO_PUBLIC_APPWRITE_EXERCISE_COLLECTION,
+}; 
 
 
 export const client = new Client();
@@ -20,6 +22,7 @@ client
 export const avatar = new Avatars(client);
 export const account = new Account(client);
 
+export const databases = new Databases(client);
 
 
 export async function login() {
@@ -82,4 +85,60 @@ export async function getCurrentUser() {
       console.log(error);
       return null;
     }
+  }
+
+
+  export async function getAllExercises()
+  {
+    try {
+        const result = await databases.listDocuments(
+           config.databaseId!,
+           config.exerciseCollectionId!,
+           [Query.orderAsc('$createdAt')],
+
+        )
+
+        return result.documents;
+      
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+  }
+
+
+  export async function getExercise({filter, query}:
+    {filter: string;
+    query: string;
+  })
+  {
+   
+      try {
+        const buildQuery = [Query.orderDesc("$createdAt")];
+    
+        if (filter && filter !== "All")
+          buildQuery.push(Query.equal("MuscleGroup", filter));
+    
+        if (query)
+          buildQuery.push(
+            Query.or([
+              Query.search("Name", query),
+              Query.search("Description", query),
+              Query.search("MuscleGroup", query),
+            ])
+          );
+    
+        
+    
+        const result = await databases.listDocuments(
+          config.databaseId!,
+          config.exerciseCollectionId!,
+          buildQuery
+        );
+    
+        return result.documents;
+      } catch (error) {
+        console.error(error);
+        return [];
+      }
   }
