@@ -2,36 +2,59 @@ import { View, Text,  StyleSheet, TextInput, TouchableOpacity, ScrollView, Image
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SearchBar from '@/.expo/components/searchBar'
+import { useEffect } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import { useAppwrite } from "@/lib/useAppwrite";
+import { useGlobalContext } from "@/lib/global-provider";
+import { getAllExercises, getExercise } from "@/lib/appwrite";
 
-const exercises = [
-  { id: '1', name: 'Chest Press (Machine)', category: 'Chest', image: require('@/assets/images/profilepic.jpg') },
-  { id: '2', name: 'Shoulder Press (Machine)', category: 'Shoulder', image: require('@/assets/images/profilepic.jpg') },
-  { id: '3', name: 'Leg Press (Machine)', category: 'Legs', image: require('@/assets/images/profilepic.jpg') },
-  { id: '4', name: 'Back Extension (Machine)', category: 'Back', image: require('@/assets/images/profilepic.jpg') },
-  { id: '5', name: 'Bicep Curl (Machine)', category: 'Arms', image: require('@/assets/images/profilepic.jpg') },
-  { id: '6', name: 'Tricep Pushdown (Cable)', category: 'Arms', image: require('@/assets/images/profilepic.jpg') },
-  { id: '7', name: 'Lat Pulldown (Machine)', category: 'Back', image: require('@/assets/images/profilepic.jpg') },
-  { id: '8', name: 'Leg Curl (Machine)', category: 'Legs', image: require('@/assets/images/profilepic.jpg') },
-  { id: '9', name: 'Smith Machine Squat', category: 'Legs', image: require('@/assets/images/profilepic.jpg') },
-  { id: '10', name: 'Dumbbell Chest Fly', category: 'Chest', image: require('@/assets/images/profilepic.jpg') },
-  { id: '11', name: 'Chest Press2 (Machine)', category: 'Chest', image: require('@/assets/images/profilepic.jpg') },
-  { id: '12', name: 'Shoulder Press2 (Machine)', category: 'Shoulder', image: require('@/assets/images/profilepic.jpg') },
-  { id: '13', name: 'Leg Press2 (Machine)', category: 'Legs', image: require('@/assets/images/profilepic.jpg') },
-  
-];
 
-console.log(exercises.length); 
 
 const exercise = () => {
+
+const { user } = useGlobalContext();
+const params = useLocalSearchParams<{ query?: string; filter?: string }>();
+
+
+const { data: allExercises, loading: allExercisesLoading } =
+    useAppwrite({
+      fn: getAllExercises,
+    });
+
+  const {
+    data: exercises,
+    refetch,
+    loading,
+  } = useAppwrite({
+    fn: getExercise,
+    params: {
+      filter: params.filter!,
+      query: params.query!,
+      
+    },
+    skip: true,
+  });
+
+  useEffect(() => {
+    refetch({
+      filter: params.filter!,
+      query: params.query!,
+      
+    });
+
+  }, [params.filter, params.query]);
+
+
+
 
   const renderExercise = ({ item }: { item: any }) => (
     <View style={styles.exerciseContainer}>
       <TouchableOpacity>
         <View style={styles.exercise}>
-          <Image style={{ width: 40, height: 40 }} source={item.image} />
+          <Image style={{ width: 40, height: 40 }} source={{ uri: item.Image }} />
           <View>
-            <Text style={ {fontWeight: 'bold'}}>{item.name}</Text>
-            <Text>{item.category}</Text>
+            <Text style={ {fontWeight: 'bold'}}>{item.Name}</Text>
+            <Text>{item.MuscleGroup}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -69,9 +92,9 @@ const exercise = () => {
       
 
     <FlatList
-        data={exercises}
+        data={allExercises}
         renderItem={renderExercise}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => (item.id ? item.id.toString() : Math.random().toString())}
         style={{ flex: 1 }} // Ensures FlatList takes up remaining space
         contentContainerStyle={{ paddingBottom: 100}} // Fixed issue with FlatList skipping last element
       />
