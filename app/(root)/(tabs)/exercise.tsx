@@ -99,14 +99,21 @@ const { data: allExercises, loading: allExercisesLoading } =
     </View>
       
 
-    <FlatList
+
+
+    {exerciseData != null  && exerciseData.length > 0 ?(<FlatList
         data={exerciseData}
         renderItem={renderExercise}
         keyExtractor={(item) => (item.id ? item.id.toString() : Math.random().toString())}
         style={{ flex: 1 }} // Ensures FlatList takes up remaining space
         contentContainerStyle={{ paddingBottom: 100}} // Fixed issue with FlatList skipping last element
       />
+      ):
 
+      (<View style={styles.noResultsContainer}>
+      <Text style={styles.noResultsText}>No results found</Text>
+      </View>)}
+    
 
     </SafeAreaView>
   )
@@ -173,6 +180,19 @@ const styles =  StyleSheet.create({
 
     exerciseContainer: {
       margin: 20,
-    }
+    },
+
+    noResultsContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    noResultsText: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: 'gray',
+    },
+
+
 })
 export default exercise
