@@ -2,7 +2,7 @@ import { View, Text,  StyleSheet, TextInput, TouchableOpacity, ScrollView, Image
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SearchBar from '@/.expo/components/searchBar'
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { useAppwrite } from "@/lib/useAppwrite";
 import { useGlobalContext } from "@/lib/global-provider";
@@ -11,9 +11,9 @@ import { getAllExercises, getExercise } from "@/lib/appwrite";
 
 
 const exercise = () => {
-
+const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 const { user } = useGlobalContext();
-const params = useLocalSearchParams<{ query?: string; filter?: string }>();
+const params = useLocalSearchParams<{ query?: string; filter?: any }>();
 
 
 const { data: allExercises, loading: allExercisesLoading } =
@@ -28,7 +28,7 @@ const { data: allExercises, loading: allExercisesLoading } =
   } = useAppwrite({
     fn: getExercise,
     params: {
-      filter: params.filter!,
+      filter: selectedFilter || params.filter,
       query: params.query!,
       
     },
@@ -37,15 +37,21 @@ const { data: allExercises, loading: allExercisesLoading } =
 
   useEffect(() => {
     refetch({
-      filter: params.filter!,
+      filter: selectedFilter || params.filter,
       query: params.query!,
       
     });
 
-  }, [params.filter, params.query]);
+  }, [params.filter, params.query, selectedFilter]);
 
 
+  const handleFilter = (filter: string) => {
+    setSelectedFilter(filter); 
+  };
 
+  const clearFilter = () => {
+    setSelectedFilter(null); 
+  };
 
   const renderExercise = ({ item }: { item: any }) => (
     <View style={styles.exerciseContainer}>
@@ -61,7 +67,8 @@ const { data: allExercises, loading: allExercisesLoading } =
     </View>
   );
 
-
+  // If filter applied, use that otherwise allexercises is used
+  const exerciseData = exercises || allExercises;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -78,12 +85,13 @@ const { data: allExercises, loading: allExercisesLoading } =
       <ScrollView horizontal showsHorizontalScrollIndicator={false} >
 
         <View style={styles.filterContainer}>
-          <TouchableOpacity>  <Text style={styles.filterBtn}>Arms</Text> </TouchableOpacity>
-          <TouchableOpacity>  <Text style={styles.filterBtn}>Back</Text> </TouchableOpacity>
-          <TouchableOpacity>  <Text style={styles.filterBtn}>Chest</Text> </TouchableOpacity>
-          <TouchableOpacity>  <Text style={styles.filterBtn}>Legs</Text> </TouchableOpacity>
-          <TouchableOpacity>  <Text style={styles.filterBtn}>Shoulder</Text> </TouchableOpacity>
-          <TouchableOpacity>  <Text style={styles.filterBtn}>Other</Text> </TouchableOpacity>
+        <TouchableOpacity onPress={() => clearFilter()} activeOpacity={0.7}>  <Text style={styles.filterBtn}>All</Text> </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleFilter("Arms")} activeOpacity={0.7}>  <Text style={styles.filterBtn}>Arms</Text> </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleFilter("Back")} activeOpacity={0.7}>  <Text style={styles.filterBtn}>Back</Text> </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleFilter("Chest")} activeOpacity={0.7}>  <Text style={styles.filterBtn}>Chest</Text> </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleFilter("Legs")} activeOpacity={0.7}>  <Text style={styles.filterBtn}>Legs</Text> </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleFilter("Shoulder")} activeOpacity={0.7}>  <Text style={styles.filterBtn}>Shoulder</Text> </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleFilter("other")} activeOpacity={0.7}>  <Text style={styles.filterBtn}>Other</Text> </TouchableOpacity>
 
         </View>
       </ScrollView>
@@ -92,7 +100,7 @@ const { data: allExercises, loading: allExercisesLoading } =
       
 
     <FlatList
-        data={allExercises}
+        data={exerciseData}
         renderItem={renderExercise}
         keyExtractor={(item) => (item.id ? item.id.toString() : Math.random().toString())}
         style={{ flex: 1 }} // Ensures FlatList takes up remaining space
