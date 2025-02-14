@@ -42,7 +42,7 @@ const { data: allExercises, loading: allExercisesLoading } =
       
     });
 
-  }, [params.filter, params.query, selectedFilter]);
+  }, [params.filter, params.query, selectedFilter, params.query]);
 
 
   const handleFilter = (filter: string) => {
