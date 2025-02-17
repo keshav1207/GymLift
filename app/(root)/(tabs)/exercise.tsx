@@ -111,7 +111,7 @@ const { data: allExercises, loading: allExercisesLoading } =
       ):
 
       (<View style={styles.noResultsContainer}>
-      <Text style={styles.noResultsText}>No results found</Text>
+      <Text style={styles.noResultsText}> No results found</Text>
       </View>)}
     
 
@@ -188,7 +188,7 @@ const styles =  StyleSheet.create({
       alignItems: 'center',
     },
     noResultsText: {
-      fontSize: 18,
+      fontSize: 30,
       fontWeight: 'bold',
       color: 'gray',
     },
