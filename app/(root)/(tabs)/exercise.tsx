@@ -7,6 +7,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useAppwrite } from "@/lib/useAppwrite";
 import { useGlobalContext } from "@/lib/global-provider";
 import { getAllExercises, getExercise } from "@/lib/appwrite";
+import { useRouter } from "expo-router"
 
 
 
@@ -53,9 +54,15 @@ const { data: allExercises, loading: allExercisesLoading } =
     setSelectedFilter(null); 
   };
 
+  const router = useRouter(); 
+
+  const navigateToExerciseDescription = () => {
+    router.push("/exerciseDescription"); 
+  };
+
   const renderExercise = ({ item }: { item: any }) => (
     <View style={styles.exerciseContainer}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() =>navigateToExerciseDescription()}>
         <View style={styles.exercise}>
           <Image style={{ width: 40, height: 40 }} source={{ uri: item.Image }} />
           <View>
@@ -69,6 +76,10 @@ const { data: allExercises, loading: allExercisesLoading } =
 
   // If filter applied, use that otherwise allexercises is used
   const exerciseData = exercises || allExercises;
+
+
+
+  
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
