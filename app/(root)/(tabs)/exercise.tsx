@@ -7,7 +7,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useAppwrite } from "@/lib/useAppwrite";
 import { useGlobalContext } from "@/lib/global-provider";
 import { getAllExercises, getExercise } from "@/lib/appwrite";
-import { useRouter } from "expo-router"
+
 
 
 
@@ -54,15 +54,25 @@ const { data: allExercises, loading: allExercisesLoading } =
     setSelectedFilter(null); 
   };
 
-  const router = useRouter(); 
-
-  const navigateToExerciseDescription = () => {
-    router.push("/exerciseDescription"); 
+  type Exercise = {
+    Description: string; 
+    Name: string;
+    MuscleGroup: string;
+    Image: string; 
   };
+  
+ 
+  const navigateToExerciseDescription = (exercise: Exercise) => {
+    const encodedImage = encodeURIComponent(exercise.Image);
+    router.push(`/exerciseDescription?description=${exercise.Description}&name=${exercise.Name}&muscleGroup=${exercise.MuscleGroup}&image=${encodedImage}`);
+  };
+  
+  
+
 
   const renderExercise = ({ item }: { item: any }) => (
     <View style={styles.exerciseContainer}>
-      <TouchableOpacity onPress={() =>navigateToExerciseDescription()}>
+      <TouchableOpacity onPress={() =>navigateToExerciseDescription(item)}>
         <View style={styles.exercise}>
           <Image style={{ width: 40, height: 40 }} source={{ uri: item.Image }} />
           <View>
