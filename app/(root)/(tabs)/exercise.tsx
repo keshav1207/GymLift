@@ -13,7 +13,6 @@ import { getAllExercises, getExercise } from "@/lib/appwrite";
 
 const exercise = () => {
 const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
-const { user } = useGlobalContext();
 const params = useLocalSearchParams<{ query?: string; filter?: any }>();
 
 
