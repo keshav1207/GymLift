@@ -9,6 +9,8 @@ export const config = {
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
     databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
     exerciseCollectionId: process.env.EXPO_PUBLIC_APPWRITE_EXERCISE_COLLECTION,
+    workoutCollectionId: process.env.EXPO_PUBLIC_APPWRITE_WORKOUT_COLLECTION,
+    exerciseInstanceCollectionId: process.env.EXPO_PUBLIC_APPWRITE_EXERCISEINSTANCE_COLLECTION,
 }; 
 
 
@@ -141,4 +143,26 @@ export async function getCurrentUser() {
         console.error(error);
         return [];
       }
+
+
+
+  }
+
+
+  export async function getAllWorkout()
+  {
+    try {
+        const result = await databases.listDocuments(
+           config.databaseId!,
+           config.workoutCollectionId!,
+           [Query.orderAsc('$createdAt')],
+
+        )
+
+        return result.documents;
+      
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
   }
