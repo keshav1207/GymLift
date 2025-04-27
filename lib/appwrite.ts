@@ -176,11 +176,10 @@ export async function getCurrentUser() {
            config.workoutCollectionId!,
            [
             
-            Query.equal('name', workoutName),
-            'expand=exerciseInstances.exercise'
-
+            Query.equal('Name', workoutName),
+           
            ],
-          
+           
 
       );
 
@@ -212,7 +211,7 @@ export async function getCurrentUser() {
      return exercises;
 
     } catch (error) {
-      console.log("Error occured getting workout details");
+      console.error("Error occured getting workout details", error);
       throw error;
     }
   };
