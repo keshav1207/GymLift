@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppwrite } from '@/lib/useAppwrite';
 import { getAllWorkout } from '@/lib/appwrite';
@@ -59,10 +59,14 @@ const WorkoutScreen = () => {
     }
   });
 
- 
+  const navigateToWorkoutDescription = (name: string) => {
+      router.push(`/workoutDescription?name=${name}`);
+    };
+
+    
   const renderWorkout = ({ item }: { item: any }) => (
     <View style={styles.workoutBox}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigateToWorkoutDescription(item.Name)}>
         <Text style={styles.workoutTitle}>{item.Name}</Text>
       </TouchableOpacity>
     </View>
