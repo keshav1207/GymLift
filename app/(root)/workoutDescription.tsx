@@ -16,6 +16,7 @@ const WorkoutDescription = () => {
           
         </View>
 
+      
       </ScrollView>
     </SafeAreaView>
   );
@@ -39,8 +40,7 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 8,
   },
- 
- 
+
 });
 
 export default WorkoutDescription;

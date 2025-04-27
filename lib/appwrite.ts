@@ -166,3 +166,53 @@ export async function getCurrentUser() {
         return [];
     }
   }
+
+  export async function getWorkoutDetails(workoutName: string)
+  {
+    try {
+
+      const result = await databases.listDocuments(
+        config.databaseId!,
+           config.workoutCollectionId!,
+           [
+            
+            Query.equal('name', workoutName),
+            'expand=exerciseInstances.exercise'
+
+           ],
+          
+
+      );
+
+      const workout = result.documents[0];
+
+      type Exercise = {
+         Description: string; 
+         Name: string;
+         MuscleGroup: string;
+         Image: string; 
+       };
+
+      type Instance = 
+      {
+
+        Sets: number,
+        Reps: number,
+        exercise: Exercise;
+      };
+      const exercises = workout.exerciseInstance.map((instance:(Instance)) => ({
+        
+        sets: instance.Sets,
+        reps: instance.Reps,
+        name: instance.exercise?.Name || 'Unknown',
+
+      }));
+
+
+     return exercises;
+
+    } catch (error) {
+      console.log("Error occured getting workout details");
+      throw error;
+    }
+  };
