@@ -10,7 +10,7 @@ import { getAllExercises, getExercise } from "@/lib/appwrite";
 
 
 
-const exercise = () => {
+const createWorkout = () => {
 const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 const params = useLocalSearchParams<{ query?: string; filter?: any }>();
 
@@ -214,4 +214,4 @@ const styles =  StyleSheet.create({
 
 
 })
-export default exercise
+export default createWorkout
