@@ -48,16 +48,17 @@ const WorkoutDescription = () => {
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.textContainer}>
           <Text style={styles.title}>{name}</Text>
-
+          <View style={styles.workoutTile}>
           {exercises.map((exercise, index) => (
-            <View key={index}>
-              <Text >{exercise.name}</Text>
-              <Text>
-                Sets: {exercise.sets} | Reps: {exercise.reps}
-              </Text>
-            </View>
-          ))}
-          
+          <View key={index} style={styles.exerciseRow}>
+            <Text style={styles.exerciseName}>{exercise.name}</Text>
+            <Text style={styles.exerciseDetails}>
+              {exercise.sets} set{exercise.sets > 1 ? 's' : ''} of {exercise.reps} rep{exercise.reps > 1 ? 's' : ''}
+            </Text>
+          </View>
+        ))}
+      </View>
+              
         </View>
 
       
@@ -74,6 +75,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     paddingBottom: 20,
+    
   },
   textContainer: {
     marginBottom: 20,
@@ -82,9 +84,31 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 8,
+    marginBottom: 20,
   },
 
+  workoutTile: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  exerciseRow: {
+    marginBottom: 15,
+  },
+  exerciseName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  exerciseDetails: {
+    fontSize: 14,
+    color: '#666',
+  },
 });
 
 export default WorkoutDescription;
