@@ -85,6 +85,10 @@ const WorkoutScreen = () => {
       router.push(`/workoutDescription?name=${name}`);
     };
 
+    const navigateToCreateWorkout = () => {
+      router.push(`/createWorkout`);
+    };
+
     
   const renderWorkout = ({ item }: { item: any }) => (
     <View style={styles.workoutBox}>
@@ -98,7 +102,7 @@ const WorkoutScreen = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Workouts</Text>
-       <TouchableOpacity> 
+       <TouchableOpacity onPress={() => navigateToCreateWorkout()} > 
         
        <Text style={styles.button}> Create Workout</Text>
         
