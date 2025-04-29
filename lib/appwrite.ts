@@ -1,7 +1,6 @@
 
-import {Client, Avatars, Account, OAuthProvider, Databases,Query} from "react-native-appwrite"
+import {Client, Avatars, Account, OAuthProvider, Databases,Query, ID} from "react-native-appwrite"
 import * as Linking from 'expo-linking';
-import * as AuthSession from 'expo-auth-session';
 import { openAuthSessionAsync } from "expo-web-browser";
 export const config = {
     platform:'com.jsm.gymlift',
@@ -146,6 +145,32 @@ export async function getCurrentUser() {
 
 
 
+  }
+
+  export async function createWorkout(name: String)
+  {
+    try {
+
+      const result = await databases.createDocument(
+        config.databaseId!,
+        config.workoutCollectionId!,
+        ID.unique(),
+
+        {
+         Name:name,
+          exercisesInstance: []
+        }
+      
+     );
+
+     return result;
+
+      
+    } catch (error) {
+
+      console.error(error);
+      
+    }
   }
 
 
