@@ -5,6 +5,7 @@ import { useAppwrite } from '@/lib/useAppwrite';
 import { getAllWorkout } from '@/lib/appwrite';
 
 
+
 const WorkoutScreen = () => {
   
   const { data: allWorkouts, loading: allWorkoutsLoading } = useAppwrite({
@@ -16,18 +17,23 @@ const WorkoutScreen = () => {
 
   const styles = StyleSheet.create({
     header: {
+      textAlign: 'center',
       width: '100%',
       justifyContent: 'center',
       alignItems: 'center',
       margin: 20,
+      
     },
     headerText: {
+      textAlign: 'center',
       fontSize: 24,
       fontWeight: 'bold',
+      
     },
     workoutBox: {
       padding: 20,  
       marginBottom: 15,
+      marginLeft: 40,
       backgroundColor: '#f9f9f9', 
       borderRadius: 10,  
       elevation: 5, 
@@ -56,6 +62,22 @@ const WorkoutScreen = () => {
     flatContainer: {
       justifyContent: 'center',
       alignItems: 'center',
+    },
+
+    button: {
+      padding: 20,  
+      marginTop: 15,
+      marginBottom: 15,
+      backgroundColor: '#f9f9f9', 
+      borderRadius: 10,  
+      elevation: 5, 
+      alignItems: 'center',  
+      justifyContent: 'center',  
+      fontSize: 12,
+      fontWeight: 'bold',
+       
+     
+
     }
   });
 
@@ -76,6 +98,11 @@ const WorkoutScreen = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Workouts</Text>
+       <TouchableOpacity> 
+        
+       <Text style={styles.button}> Create Workout</Text>
+        
+        </TouchableOpacity>
       </View>
 
       {allWorkoutsLoading ? (
