@@ -77,6 +77,14 @@ const { data: allExercises, loading: allExercisesLoading } =
             <Text style={ {fontWeight: 'bold'}}>{item.Name}</Text>
             <Text>{item.MuscleGroup}</Text>
           </View>
+          <View>
+            <TouchableOpacity> <Text style= {styles.button}> Add </Text> </TouchableOpacity>
+
+          </View>
+
+          <View>
+            <TouchableOpacity> <Text style= {styles.button}> Delete </Text> </TouchableOpacity>
+          </View>
         </View>
       </TouchableOpacity>
     </View>
@@ -211,6 +219,18 @@ const styles =  StyleSheet.create({
       fontWeight: 'bold',
       color: 'gray',
     },
+
+    button: {
+       
+        height: 30,  
+        backgroundColor: "black",
+        color: "white",
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+        fontSize: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 
 
 })
