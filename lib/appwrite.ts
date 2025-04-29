@@ -174,6 +174,34 @@ export async function getCurrentUser() {
   }
 
 
+  export async function getWorkoutByName  (name: string)  {
+    try {
+
+      const response = await databases.listDocuments(
+        config.databaseId!,
+        config.workoutCollectionId!,
+        [
+          Query.equal('Name', name)  
+        ]
+      );
+      
+      if (response.documents.length > 0) {
+
+        console.log('Workout found:', response.documents[0]);
+      
+        return response.documents[0]; 
+
+      } else {
+
+        console.log('No workout found with this name');
+      }
+    } catch (error) {
+
+      console.error('Error fetching workout by name:', error);
+    }
+  };
+
+
   export async function getAllWorkout()
   {
     try {
