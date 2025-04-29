@@ -1,5 +1,5 @@
-import { View, Text,  StyleSheet, TextInput, TouchableOpacity, ScrollView, Image, FlatList} from 'react-native'
-import React from 'react'
+import { View, Text,  StyleSheet, TextInput, TouchableOpacity, ScrollView, Image, FlatList, Modal, Button} from 'react-native'
+import React, { useRef } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SearchBar from '@/.expo/components/searchBar'
 import { useEffect, useState } from "react";
@@ -14,6 +14,13 @@ const createWorkout = () => {
 
 const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 const params = useLocalSearchParams<{ query?: string; filter?: any }>();
+
+const [modalVisible, setModalVisible] = useState(false);
+const [currentName, setCurrentName] = useState('');
+const [currentSets, setCurrentSets] = useState('');
+const [currentReps, setCurrentReps] = useState('');
+const [editingExerciseId, setEditingExerciseId] = useState<string | null>(null);
+  const [exerciseInstances, setExerciseInstances] = useState<ExerciseInstance[]>([]);
 
 
 const { data: allExercises, loading: allExercisesLoading } =
@@ -54,11 +61,19 @@ const { data: allExercises, loading: allExercisesLoading } =
   };
 
   type Exercise = {
+   
     Description: string; 
     Name: string;
     MuscleGroup: string;
     Image: string; 
   };
+
+  type ExerciseInstance = {
+    id: string;
+    Name: String;
+    Sets: Number;
+    Reps: Number;
+  }
   
  
   const navigateToExerciseDescription = (exercise: Exercise) => {
@@ -66,34 +81,66 @@ const { data: allExercises, loading: allExercisesLoading } =
     router.push(`/exerciseDescription?description=${exercise.Description}&name=${exercise.Name}&muscleGroup=${exercise.MuscleGroup}&image=${encodedImage}`);
   };
   
+  const logExercises = () => {
+    console.log('Current exercises:', exerciseInstances);
+  };
+  
+  const openModal = (exerciseName: string) => {
+    setCurrentName(exerciseName); 
+    setCurrentSets('');
+    setCurrentReps('');
+    setModalVisible(true);
+  };
+  
   
 
-  let exerciseInstances: string[] = []
+  function addExercise() {
 
-  function addExercise (name:string)
-  {
-    if (!exerciseInstances.includes(name)) {
-        exerciseInstances.push(name);
-      }
+    const updatedExercise: ExerciseInstance = {
+      id: editingExerciseId || Date.now().toString(),
+      Name: currentName,  
+      Sets: parseInt(currentSets) || 0,
+      Reps: parseInt(currentReps) || 0,
+    };
 
-      console.log(exerciseInstances)
+   
+  const alreadyExists = exerciseInstances.some(e => e.Name === currentName);
+  if (!editingExerciseId && alreadyExists) {
+    
+    setModalVisible(false); 
+    return;
+  }
+
+  
+  if (editingExerciseId) {
+    setExerciseInstances(prev =>
+      prev.map(e => (e.id === editingExerciseId ? updatedExercise : e))
+    );
+
+  } else {
+    
+    setExerciseInstances(prev => [...prev, updatedExercise]);
+  }
+   
+    setCurrentSets('');
+    setCurrentReps('');
+    setModalVisible(false);
+
+    
   }
 
   function removeExercise (name:string)
   {
 
-    if (exerciseInstances.includes(name)) {
-        exerciseInstances = exerciseInstances.filter(item => item !== name);
-      }
+    setExerciseInstances(prev => prev.filter(e => e.Name !== name));
 
-      console.log(exerciseInstances)
   }
 
 
+  const renderExercise = ({ item }: { item: any }) => {
+    const isAlreadyAdded = exerciseInstances.some(e => e.Name === item.Name);
 
-
-  const renderExercise = ({ item }: { item: any }) => (
-    <View style={styles.exerciseContainer}>
+    return (<View style={styles.exerciseContainer}>
       <TouchableOpacity onPress={() =>navigateToExerciseDescription(item)}>
         <View style={styles.exercise}>
           <Image style={{ width: 40, height: 40 }} source={{ uri: item.Image }} />
@@ -102,19 +149,30 @@ const { data: allExercises, loading: allExercisesLoading } =
             <Text>{item.MuscleGroup}</Text>
           </View>
           <View>
-            <TouchableOpacity  onPress={() => addExercise(item.Name)} > <Text style= {styles.button}> Add </Text> </TouchableOpacity>
+            <TouchableOpacity  onPress={() => openModal(item.Name)} > <Text style= {styles.button}> {isAlreadyAdded ? 'Update' : 'Add'} </Text> </TouchableOpacity>
 
           </View>
 
+        {isAlreadyAdded && 
           <View>
 
             <TouchableOpacity  onPress={() => removeExercise(item.Name)} > <Text style= {styles.button}> Delete </Text> </TouchableOpacity>
 
           </View>
+        }
+        
+
         </View>
       </TouchableOpacity>
     </View>
   );
+
+
+  }
+   
+
+    
+    
 
   // If filter applied, use that otherwise allexercises is used
   const exerciseData = exercises || allExercises;
@@ -129,6 +187,7 @@ const { data: allExercises, loading: allExercisesLoading } =
    <View>
     <View style={styles.header}>
       <Text style={styles.headerText}>Exercises</Text>
+      <Button title="Log Exercises" onPress={logExercises} />
       </View>
 
       <SearchBar/>
@@ -150,6 +209,8 @@ const { data: allExercises, loading: allExercisesLoading } =
       </ScrollView>
 
     </View>
+
+
       
 
 
@@ -166,6 +227,42 @@ const { data: allExercises, loading: allExercisesLoading } =
       (<View style={styles.noResultsContainer}>
       <Text style={styles.noResultsText}> No results found</Text>
       </View>)}
+
+
+      <Modal
+     visible={modalVisible}
+     animationType="slide"
+     transparent={true}
+    onRequestClose={() => setModalVisible(false)}>
+
+   <View style={styles.modalOverlay}>
+    <View style={styles.modalView}>
+      <Text style={styles.modalTitle}>Add Exercise</Text>
+
+      <Text> {currentName} </Text>
+
+      <TextInput
+        placeholder="Sets"
+        keyboardType="numeric"
+        style={styles.input}
+        value={currentSets}
+        onChangeText={setCurrentSets}
+      />
+      <TextInput
+        placeholder="Reps"
+        keyboardType="numeric"
+        style={styles.input}
+        value={currentReps}
+        onChangeText={setCurrentReps}
+      />
+
+      <View style={styles.buttonRow}>
+        <Button title="Cancel" color="gray" onPress={() => setModalVisible(false)} />
+        <Button title="Add" onPress={addExercise} />
+      </View>
+      </View>
+      </View>
+      </Modal>
     
 
     </SafeAreaView>
@@ -189,10 +286,7 @@ const styles =  StyleSheet.create({
     icon: {
       marginRight: 8,
     },
-    input: {
-      flex: 1,
-      fontSize: 16,
-    },
+    
 
     searchBar: {
       flexDirection: 'row',
@@ -256,8 +350,39 @@ const styles =  StyleSheet.create({
         fontSize: 10,
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
 
+    input: {
+      borderWidth: 1,
+      borderColor: '#ccc',
+      padding: 10,
+      marginVertical: 5,
+      borderRadius: 5,
+      fontSize: 6,
+    },
+
+    modalView: {
+      backgroundColor: 'white',
+      borderRadius: 10,
+      padding: 20,
+    },
+    modalTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 10,
+    },
+    buttonRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 15,
+    },
+
+    modalOverlay: {
+      flex: 1,
+      justifyContent: 'center',
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      padding: 20,
+    },
 
 })
 export default createWorkout
