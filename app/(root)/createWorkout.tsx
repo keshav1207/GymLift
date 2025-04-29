@@ -11,6 +11,7 @@ import { getAllExercises, getExercise } from "@/lib/appwrite";
 
 
 const createWorkout = () => {
+
 const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 const params = useLocalSearchParams<{ query?: string; filter?: any }>();
 
@@ -67,6 +68,29 @@ const { data: allExercises, loading: allExercisesLoading } =
   
   
 
+  let exerciseInstances: string[] = []
+
+  function addExercise (name:string)
+  {
+    if (!exerciseInstances.includes(name)) {
+        exerciseInstances.push(name);
+      }
+
+      console.log(exerciseInstances)
+  }
+
+  function removeExercise (name:string)
+  {
+
+    if (exerciseInstances.includes(name)) {
+        exerciseInstances = exerciseInstances.filter(item => item !== name);
+      }
+
+      console.log(exerciseInstances)
+  }
+
+
+
 
   const renderExercise = ({ item }: { item: any }) => (
     <View style={styles.exerciseContainer}>
@@ -78,12 +102,14 @@ const { data: allExercises, loading: allExercisesLoading } =
             <Text>{item.MuscleGroup}</Text>
           </View>
           <View>
-            <TouchableOpacity> <Text style= {styles.button}> Add </Text> </TouchableOpacity>
+            <TouchableOpacity  onPress={() => addExercise(item.Name)} > <Text style= {styles.button}> Add </Text> </TouchableOpacity>
 
           </View>
 
           <View>
-            <TouchableOpacity> <Text style= {styles.button}> Delete </Text> </TouchableOpacity>
+
+            <TouchableOpacity  onPress={() => removeExercise(item.Name)} > <Text style= {styles.button}> Delete </Text> </TouchableOpacity>
+
           </View>
         </View>
       </TouchableOpacity>
