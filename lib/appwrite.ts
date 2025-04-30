@@ -107,6 +107,28 @@ export async function getCurrentUser() {
     }
   }
 
+  export async function getExerciseByName( exerciseName: any)
+  {
+    try {
+      const result = await databases.listDocuments(
+        config.databaseId!,
+        config.exerciseCollectionId!,
+        [Query.equal('Name', exerciseName)],
+
+      );
+
+      if (result.documents.length === 0) {
+        console.log(`No exercise found with name: ${exerciseName}`);
+        return null;  
+      }
+
+
+      return result.documents[0];
+      
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   export async function getExercise({filter, query}:
     {filter: string;
@@ -203,30 +225,7 @@ export async function getCurrentUser() {
     }
   };
 
-  export async function getExerciseByName( exerciseName: any)
-  {
-    try {
-      const result = await databases.listDocuments(
-        config.databaseId!,
-        config.exerciseCollectionId!,
-        [
-          Query.equal('Name', exerciseName)
-        ]
-
-      );
-
-      if (result.documents.length === 0) {
-        console.log(`No exercise found with name: ${exerciseName}`);
-        return null;  
-      }
-
-
-      return result.documents[0];
-      
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  
 
 
   type exerInst = {
@@ -235,9 +234,52 @@ export async function getCurrentUser() {
      Reps: Number
   }
 
+  
+
   export async function  fillWorkout(exercisesInstanceArray: exerInst[], workoutName: string)
   {
+      const workoutDoc = await getWorkoutByName(workoutName)
 
+      if (!workoutDoc) {
+        console.error(`Exercise with name ${workoutName} not found.`);
+        return
+      }
+      
+
+      for (const exercise of exercisesInstanceArray) {
+        
+      const exerciseDoc =  await getExerciseByName(exercise.Name)
+
+      if (!exerciseDoc) {
+        console.error(`Exercise with name ${exercise.Name} not found.`);
+        continue;
+      }
+
+        const exerciseInstance = await databases.createDocument(
+          config.databaseId!,
+          config.exerciseInstanceCollectionId!,
+          ID.unique(), 
+          {
+           
+            Sets: exercise.Sets,
+            Reps: exercise.Reps,
+            exercise: exerciseDoc.$id,
+          }
+        );
+
+      workoutDoc.exerciseInstance.push(exerciseInstance.$id); 
+
+      
+      }
+
+      await databases.updateDocument(
+        config.databaseId!,
+        config.workoutCollectionId!,
+        workoutDoc.$id, 
+        {
+          exerciseInstance: workoutDoc.exerciseInstance,
+        }
+      );
   }
 
 
