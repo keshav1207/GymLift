@@ -147,6 +147,8 @@ export async function getCurrentUser() {
 
   }
 
+
+
   export async function createWorkout(name: String)
   {
     try {
@@ -200,6 +202,43 @@ export async function getCurrentUser() {
       console.error('Error fetching workout by name:', error);
     }
   };
+
+  export async function getExerciseByName( exerciseName: any)
+  {
+    try {
+      const result = await databases.listDocuments(
+        config.databaseId!,
+        config.exerciseCollectionId!,
+        [
+          Query.equal('Name', exerciseName)
+        ]
+
+      );
+
+      if (result.documents.length === 0) {
+        console.log(`No exercise found with name: ${exerciseName}`);
+        return null;  
+      }
+
+
+      return result.documents[0];
+      
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  type exerInst = {
+     Name: String;
+     Sets: Number;
+     Reps: Number
+  }
+
+  export async function  fillWorkout(exercisesInstanceArray: exerInst[], workoutName: string)
+  {
+
+  }
 
 
   export async function getAllWorkout()
