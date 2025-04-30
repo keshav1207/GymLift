@@ -1,11 +1,11 @@
 import { View, Text,  StyleSheet, TextInput, TouchableOpacity, ScrollView, Image, FlatList, Modal, Button} from 'react-native'
-import React, { useRef } from 'react'
+import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SearchBar from '@/.expo/components/searchBar'
 import { useEffect, useState } from "react";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useAppwrite } from "@/lib/useAppwrite";
-import { getAllExercises, getExercise } from "@/lib/appwrite";
+import { getAllExercises, getExercise, fillWorkout, createNewWorkout, getWorkoutByName } from "@/lib/appwrite";
 
 
 
@@ -23,7 +23,7 @@ const [editingExerciseId, setEditingExerciseId] = useState<string | null>(null);
   const [exerciseInstances, setExerciseInstances] = useState<ExerciseInstance[]>([]);
 
 
-const { data: allExercises, loading: allExercisesLoading } =
+const { data: allExercises } =
     useAppwrite({
       fn: getAllExercises,
     });
@@ -31,7 +31,7 @@ const { data: allExercises, loading: allExercisesLoading } =
   const {
     data: exercises,
     refetch,
-    loading,
+    
   } = useAppwrite({
     fn: getExercise,
     params: {
@@ -76,13 +76,26 @@ const { data: allExercises, loading: allExercisesLoading } =
   }
   
  
-  const navigateToExerciseDescription = (exercise: Exercise) => {
-    const encodedImage = encodeURIComponent(exercise.Image);
-    router.push(`/exerciseDescription?description=${exercise.Description}&name=${exercise.Name}&muscleGroup=${exercise.MuscleGroup}&image=${encodedImage}`);
-  };
   
-  const logExercises = () => {
+  
+  async function finaliseWorkout()  {
     console.log('Current exercises:', exerciseInstances);
+    const coco =[{"Name": "Crunches", "Reps": 5, "Sets": 5, "id": "1745977114160"}];
+   
+    try {
+      
+        await  createNewWorkout("Workout B");
+        
+      
+
+      await  fillWorkout(coco, "Workout B");
+     
+
+    } catch (error) {
+      console.error(error)
+    }
+    
+
   };
   
   const openModal = (exerciseName: string) => {
@@ -141,7 +154,7 @@ const { data: allExercises, loading: allExercisesLoading } =
     const isAlreadyAdded = exerciseInstances.some(e => e.Name === item.Name);
 
     return (<View style={styles.exerciseContainer}>
-      <TouchableOpacity onPress={() =>navigateToExerciseDescription(item)}>
+      <TouchableOpacity >
         <View style={styles.exercise}>
           <Image style={{ width: 40, height: 40 }} source={{ uri: item.Image }} />
           <View>
@@ -187,7 +200,7 @@ const { data: allExercises, loading: allExercisesLoading } =
    <View>
     <View style={styles.header}>
       <Text style={styles.headerText}>Exercises</Text>
-      <Button title="Log Exercises" onPress={logExercises} />
+      <TouchableOpacity style={styles.finaliseBtn}  onPress={finaliseWorkout}> <Text style={{color: "white"}}> Finalise Workout </Text>  </TouchableOpacity>
       </View>
 
       <SearchBar/>
@@ -383,6 +396,20 @@ const styles =  StyleSheet.create({
       backgroundColor: 'rgba(0,0,0,0.5)',
       padding: 20,
     },
+
+    finaliseBtn: {
+      marginTop: 20,
+      backgroundColor: "black",
+      color: "white",
+      borderRadius: 15,
+      paddingHorizontal: 15,
+      paddingVertical: 5,
+      fontSize: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontWeight: 'bold',
+      
+    }
 
 })
 export default createWorkout

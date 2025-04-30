@@ -171,7 +171,7 @@ export async function getCurrentUser() {
 
 
 
-  export async function createWorkout(name: String)
+  export async function createNewWorkout(name: String)
   {
     try {
 
@@ -182,7 +182,7 @@ export async function getCurrentUser() {
 
         {
          Name:name,
-          exercisesInstance: []
+          exerciseInstance: []
         }
       
      );
@@ -244,7 +244,9 @@ export async function getCurrentUser() {
         console.error(`Exercise with name ${workoutName} not found.`);
         return
       }
+    
       
+      const workoutDocExerInstance = []
 
       for (const exercise of exercisesInstanceArray) {
         
@@ -267,7 +269,7 @@ export async function getCurrentUser() {
           }
         );
 
-      workoutDoc.exerciseInstance.push(exerciseInstance.$id); 
+        workoutDocExerInstance.push(exerciseInstance.$id); 
 
       
       }
@@ -277,7 +279,7 @@ export async function getCurrentUser() {
         config.workoutCollectionId!,
         workoutDoc.$id, 
         {
-          exerciseInstance: workoutDoc.exerciseInstance,
+          exerciseInstance: workoutDocExerInstance,
         }
       );
   }
