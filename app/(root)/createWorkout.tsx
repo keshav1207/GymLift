@@ -125,9 +125,17 @@ const { data: allExercises } =
   };
   
   const openModal = (exerciseName: string) => {
+
+    const existing = exerciseInstances.find(e => e.Name === exerciseName);
+
     setCurrentName(exerciseName); 
-    setCurrentSets('');
-    setCurrentReps('');
+
+    setCurrentSets(existing ? existing.Sets.toString() : '');
+
+    setCurrentReps(existing ? existing.Reps.toString() : '');
+
+    setEditingExerciseId(existing ? existing.id : null);  
+    
     setModalVisible(true);
   };
   
@@ -154,11 +162,14 @@ const { data: allExercises } =
   if (editingExerciseId) {
     setExerciseInstances(prev =>
       prev.map(e => (e.id === editingExerciseId ? updatedExercise : e))
+      
     );
+    alert( `${currentName} updated in the workout`)
 
   } else {
     
     setExerciseInstances(prev => [...prev, updatedExercise]);
+    alert( `${currentName} added to workout`)
   }
    
     setCurrentSets('');
