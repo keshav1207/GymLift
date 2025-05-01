@@ -1,50 +1,57 @@
-# Welcome to your Expo app 👋
+# Gym Lift
+> A mobile workout app built with React Native that helps users create and manage personalized workout routines.
+ 
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Table of Contents
+* [General Info](#general-information)
+* [Technologies Used](#technologies-used)
+* [Features](#features)
+* [Screenshots](#screenshots)
+* [Contact](#contact)
 
-## Get started
 
-1. Install dependencies
 
-   ```bash
-   npm install
-   ```
+## General Information
+- This is a full stack e-commerce store powered by the MERN stack and inspired by the official Ufc store website.
 
-2. Start the app
+- I build this project as a practical application of the MERN (MongoDB, Express.js, React.js, Node.js) stack, which I learned from  various online learning resources.
 
-   ```bash
-    npx expo start
-   ```
+- As a Ufc fan, I decided to choose the Ufc theme for this online store to make the journey of building my first full stack web application from scratch more interesting and fun.
 
-In the output, you'll find options to open the app in a
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Technologies Used
+- React Native
+- Typescript
+- Javascript
+- Appwrite database
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
 
-When you're ready, run:
 
-```bash
-npm run reset-project
-```
+## Features
+List of Features includes:
+- Create personalised workout from a list of exercises
+- Ability to add sets and reps before creating the workout
+- Ability to view exercise description and the muscled worked by each exercise
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
+## Screenshots
+![Example screenshot - HomePage](./ReadMe%20Icons%20and%20Pics//Home.jpg)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+<br>
 
-## Join the community
+![Example screenshot - Exercises Page](./ReadMe%20Icons%20and%20Pics//Exercises.jpg)
 
-Join our community of developers creating universal apps.
+<br>
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+![Example screenshot - Create Workout Page](./ReadMe%20Icons%20and%20Pics//Workout.jpg)
+
+<br>
+
+![Example screenshot - Adding exercises ](./ReadMe%20Icons%20and%20Pics/AddExercise.jpg)
+
+
+## Contact
+[<img src="./ReadMe-IconsAndPics/linkedin.svg" width="20">](https://www.linkedin.com/in/keshav0799)
+Email Address: keshav0799@gmail.com
