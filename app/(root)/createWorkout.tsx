@@ -172,6 +172,7 @@ const { data: allExercises } =
   {
 
     setExerciseInstances(prev => prev.filter(e => e.Name !== name));
+    alert( `${name} delete from workout`)
 
   }
 
