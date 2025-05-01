@@ -104,14 +104,41 @@ const { data: allExercises, loading: allExercisesLoading } =
       <ScrollView horizontal showsHorizontalScrollIndicator={false} >
 
         <View style={styles.filterContainer}>
-        <TouchableOpacity onPress={() => clearFilter()} activeOpacity={0.7}>  <Text style={styles.filterBtn}>All</Text> </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleFilter("Arms")} activeOpacity={0.7}>  <Text style={styles.filterBtn}>Arms</Text> </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleFilter("Back")} activeOpacity={0.7}>  <Text style={styles.filterBtn}>Back</Text> </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleFilter("Chest")} activeOpacity={0.7}>  <Text style={styles.filterBtn}>Chest</Text> </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleFilter("Legs")} activeOpacity={0.7}>  <Text style={styles.filterBtn}>Legs</Text> </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleFilter("Shoulder")} activeOpacity={0.7}>  <Text style={styles.filterBtn}>Shoulder</Text> </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleFilter("other")} activeOpacity={0.7}>  <Text style={styles.filterBtn}>Other</Text> </TouchableOpacity>
-
+        <TouchableOpacity onPress={() => clearFilter()} activeOpacity={0.7}>
+        <View style={styles.filterBtn}>
+          <Text style={styles.filterBtnText}>All</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleFilter("Arms")} activeOpacity={0.7}>
+        <View style={styles.filterBtn}>
+          <Text style={styles.filterBtnText}>Arms</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleFilter("Back")} activeOpacity={0.7}>
+        <View style={styles.filterBtn}>
+          <Text style={styles.filterBtnText}>Back</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleFilter("Chest")} activeOpacity={0.7}>
+        <View style={styles.filterBtn}>
+          <Text style={styles.filterBtnText}>Chest</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleFilter("Legs")} activeOpacity={0.7}>
+        <View style={styles.filterBtn}>
+          <Text style={styles.filterBtnText}>Legs</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleFilter("Shoulder")} activeOpacity={0.7}>
+        <View style={styles.filterBtn}>
+          <Text style={styles.filterBtnText}>Shoulder</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleFilter("other")} activeOpacity={0.7}>
+        <View style={styles.filterBtn}>
+          <Text style={styles.filterBtnText}>Other</Text>
+        </View>
+      </TouchableOpacity>
         </View>
       </ScrollView>
 
@@ -180,16 +207,21 @@ const styles =  StyleSheet.create({
 
     filterBtn: {
       
-      width: 80,  
-      height: 30,  
-      backgroundColor: "black",
-      color: "white",
-      borderRadius: 15,
-      paddingHorizontal: 15,
-      paddingVertical: 5,
-      fontSize: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
+    width: 80,
+    height: 30, 
+    backgroundColor: "black", 
+    borderRadius: 15, 
+    paddingHorizontal: 15, 
+    paddingVertical: 5, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    },
+
+    filterBtnText: {
+    color: "white", 
+    fontSize: 10, 
+    fontWeight: 'bold', 
+    textAlign: 'center',
     },
 
     exercise: {

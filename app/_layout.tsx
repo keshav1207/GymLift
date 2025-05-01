@@ -7,7 +7,7 @@ export default function RootLayout() {
 
    < GlobalProvider>
    
-   <Stack  screenOptions={{headerShown: false}}/>;
+   <Stack  screenOptions={{headerShown: false}}/>
    
    </GlobalProvider>
     

@@ -1,5 +1,4 @@
 import { Text, View, TouchableOpacity, Alert} from "react-native";
-import { Link } from "expo-router";
 import { logout } from "@/lib/appwrite";
 import { useGlobalContext } from "@/lib/global-provider";
 import { Redirect } from "expo-router";
@@ -42,10 +41,11 @@ export default function Index() {
     
 
       <TouchableOpacity onPress={handleLogout}>
-                    <View className='logOutBtn'>
-                      </View>
-                      <Text> Log out</Text>
-     </TouchableOpacity>
+        <View style={{ alignItems: 'center' }}>
+          <View className="logOutBtn" />
+          <Text>Log out</Text>
+        </View>
+      </TouchableOpacity>
       
 
     </View>
