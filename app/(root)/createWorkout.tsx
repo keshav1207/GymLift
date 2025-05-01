@@ -22,6 +22,10 @@ const [currentReps, setCurrentReps] = useState('');
 const [editingExerciseId, setEditingExerciseId] = useState<string | null>(null);
   const [exerciseInstances, setExerciseInstances] = useState<ExerciseInstance[]>([]);
 
+  //This is what I used to create the workout modal to choose the workout name dynamically
+  const [workoutNameModalVisible, setWorkoutNameModalVisible] = useState(false);
+const [newWorkoutName, setNewWorkoutName] = useState('');
+
 
 const { data: allExercises } =
     useAppwrite({
@@ -76,24 +80,46 @@ const { data: allExercises } =
   }
   
  
-  
-  
-  async function finaliseWorkout()  {
-    console.log('Current exercises:', exerciseInstances);
-    const coco =[{"Name": "Crunches", "Reps": 5, "Sets": 5, "id": "1745977114160"}];
-   
+  async function confirmWorkout()
+  {
+    if (!newWorkoutName.trim()) {
+      alert("Workout name cannot be empty");
+      return;
+    }
+
+    if (exerciseInstances.length == 0) {
+      alert("Workout  cannot be empty");
+      return;
+    }
+
+
     try {
       
-        await  createNewWorkout("Workout B");
-        
-      
+      await createNewWorkout(newWorkoutName.trim());
 
-      await  fillWorkout(coco, "Workout B");
+      await fillWorkout(exerciseInstances, newWorkoutName.trim());
+
+      setWorkoutNameModalVisible(false);
+
+      setNewWorkoutName('');
+
+      alert("Workout created successfully!");
+
+
+      setExerciseInstances([]);
+      setNewWorkoutName('');
      
 
     } catch (error) {
       console.error(error)
     }
+    
+  }
+  
+  async function finaliseWorkout()  {
+
+   
+    setWorkoutNameModalVisible(true);
     
 
   };
@@ -277,6 +303,30 @@ const { data: allExercises } =
       </View>
       </Modal>
     
+
+
+      <Modal
+      visible={workoutNameModalVisible}
+      animationType="slide"
+      transparent={true}
+      onRequestClose={() => setWorkoutNameModalVisible(false)}
+    >
+      <View style={styles.modalOverlay}>
+        <View style={styles.modalView}>
+          <Text style={styles.modalTitle}>Enter Workout Name</Text>
+          <TextInput
+            placeholder="Workout name"
+            value={newWorkoutName}
+            onChangeText={setNewWorkoutName}
+            style={styles.input}
+          />
+          <View style={styles.buttonRow}>
+            <Button title="Cancel" color="gray" onPress={() => setWorkoutNameModalVisible(false)} />
+            <Button title="Confirm" onPress={confirmWorkout} />
+          </View>
+        </View>
+      </View>
+    </Modal>
 
     </SafeAreaView>
   )
