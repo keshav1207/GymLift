@@ -53,5 +53,7 @@ List of Features includes:
 
 
 ## Contact
+LinkedIn 
 [<img src="./ReadMe-IconsAndPics/linkedin.svg" width="20">](https://www.linkedin.com/in/keshav0799)
+<br>
 Email Address: keshav0799@gmail.com
